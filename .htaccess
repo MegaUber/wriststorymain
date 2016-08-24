@@ -1,0 +1,22 @@
+# secure htaccess file
+<Files .htaccess>
+ order allow,deny
+ deny from all
+</Files>
+
+# protect against DOS attacks by limiting file upload size
+LimitRequestBody 10240000
+
+RewriteEngine On    # Turn on the rewriting engine
+RewriteRule    ^Products/?$    content/products.php    [NC,L]    # Handle requests for "products"
+RewriteRule    ^/$    index.php    [NC,L]    # Handle requests for "index"
+
+# cache images and flash content for one month
+<FilesMatch ".(flv|gif|jpg|jpeg|png|ico|swf)$">
+Header set Cache-Control "max-age=2592000"
+</FilesMatch>
+
+# preserve bandwidth for PHP enabled servers
+<ifmodule mod_php4.c>
+ php_value zlib.output_compression 16386
+</ifmodule>
